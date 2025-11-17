@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercice 3 • Manipulation de dates</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      /* Thème Violet Royal + Or 2025 */
+      --primary: #7c3aed;        /* Violet principal */
+      --primary-dark: #6d28d9;
+      --accent: #fbbf24;         /* Or doux */
+      --dark: #1a0d33;           /* Violet très foncé (remplace le noir) */
+      --light: #faf7ff;
+      --gray: #e2e8f0;
+      --text: #1e1b4b;
+      --error: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 50%, #fae8ff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      max-width: 720px;
+      width: 100%;
+      border-radius: 28px;
+      box-shadow: 0 30px 70px rgba(124, 58, 237, 0.22);
+      overflow: hidden;
+      border: 2px solid #c4b5fd;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--dark) 0%, #4c1d95 100%);
+      color: white;
+      padding: 50px 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.15rem;
+      opacity: 0.95;
+    }
+
+    main { padding: 55px 45px; }
+
+    h2 {
+      color: var(--primary);
+      text-align: center;
+      font-size: 1.9rem;
+      margin-bottom: 45px;
+      font-weight: 700;
+    }
+
+    .input-group {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 14px;
+      font-weight: 600;
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      font-size: 1.4rem;
+      border: 3px solid #ddd6fe;
+      border-radius: 18px;
+      text-align: center;
+      background: #fdfaff;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.2);
+      background: white;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #f3e8ff, #fae8ff);
+      padding: 32px;
+      border-radius: 22px;
+      text-align: center;
+      border-left: 7px solid var(--primary);
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.12);
+      transition: all 0.4s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(124, 58, 237, 0.2);
+    }
+
+    .result-card i {
+      font-size: 2.6rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .result-card h3 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .value {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .error {
+      margin-top: 20px;
+      color: var(--error);
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.15rem;
+      min-height: 32px;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--dark), #4c1d95);
+      color: #e9d5ff;
+      text-align: center;
+      padding: 32px;
+      font-size: 0.98rem;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    .pulse { animation: pulse 0.7s ease; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Manipulation de dates</h1>
+      <p>JavaScript Date Object • 2025</p>
+    </header>
+
+    <main>
+      <h2>Entrez une date (JJ-MM-AAAA)</h2>
+
+      <div class="input-group">
+        <label for="dateInput">Votre date</label>
+        <input 
+          type="text" 
+          id="dateInput" 
+          placeholder="25-12-2025" 
+          oninput="traiterDate()"
+        />
+      </div>
+
+      <div id="errorMsg" class="error"></div>
+
+      <div class="results">
+        <div class="result-card">
+          <i class="fas fa-calendar-day"></i>
+          <h3>Jour</h3>
+          <div class="value" id="jour">—</div>
+        </div>
+        <div class="result-card">
+          <i class="fas fa-calendar-week"></i>
+          <h3>Mois</h3>
+          <div class="value" id="mois">—</div>
+        </div>
+        <div class="result-card">
+          <i class="fas fa-calendar-year"></i>
+          <h3>Année</h3>
+          <div class="value" id="annee">—</div>
+        </div>
+        <div class="result-card">
+          <i class="fas fa-clock"></i>
+          <h3>Différence (jours)</h3>
+          <div class="value" id="diffDays">—</div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      NATIA Salif • Portfolio 2025 • Fait avec passion à Ouagadougou
+    </footer>
+  </div>
+
+  <script>
+    const moisFR = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+
+    function traiterDate() {
+      const input = document.getElementById('dateInput').value.trim();
+      const error = document.getElementById('errorMsg');
+      const jour = document.getElementById('jour');
+      const mois = document.getElementById('mois');
+      const annee = document.getElementById('annee');
+      const diff = document.getElementById('diffDays');
+
+      error.textContent = '';
+      [jour, mois, annee, diff].forEach(el => {
+        el.textContent = '—';
+        el.parentElement.classList.remove('pulse');
+      });
+
+      if (!input) return;
+
+      const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+      if (!regex.test(input)) {
+        error.textContent = 'Format : JJ-MM-AAAA (ex: 25-12-2025)';
+        return;
+      }
+
+      const [, d, m, y] = input.match(regex);
+      const date = new Date(y, m-1, d);
+
+      if (date.getDate() != d || date.getMonth() != m-1 || date.getFullYear() != y) {
+        error.textContent = 'Date invalide !';
+        return;
+      }
+
+      const aujourdHui = new Date();
+      aujourdHui.setHours(0,0,0,0);
+      const difference = Math.ceil((date - aujourdHui) / (1000*60*60*24));
+
+      jour.textContent = date.getDate();
+      mois.textContent = moisFR[date.getMonth()];
+      annee.textContent = date.getFullYear();
+
+      if (difference === 0) diff.textContent = "Aujourd'hui";
+      else if (difference > 0) diff.textContent = `+${difference}`;
+      else diff.textContent = difference;
+
+      document.querySelectorAll('.result-card').forEach(card => {
+        card.classList.add('pulse');
+        setTimeout(() => card.classList.remove('pulse'), 700);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NATIA Salif - Développeur Web | Portfolio 2025</title>
+  <meta name="description" content="Portfolio de NATIA Salif - Développeur Web passionné basé au Burkina Faso. Spécialisé en HTML, CSS, JavaScript." />
+  <meta name="keywords" content="développeur web, Burkina Faso, portfolio, HTML, CSS, JavaScript" />
+  <meta name="author" content="NATIA Salif" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #A47864;
+      --primary-dark: #8B5A46;
+      --accent: #D4AF37;
+      --dark: #3D2B1F;
+      --light: #FDFAF7;
+      --gray: #D9C2B1;
+      --text: #4A3C31;
+      --text-light: #7A6F65;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--dark), #5C4533);
+      color: white;
+      padding: 20px 0;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 15px 0;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    .container { width: 90%; max-width: 1300px; margin: 0 auto; }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links a {
+      color: white;
+      margin-left: 35px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hamburger { display: none; cursor: pointer; background: none; border: none; color: white; font-size: 1.5rem; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #F5F0EB 0%, #EDE4D9 50%, #F8F4EF 100%);
+      padding-top: 100px;
+      position: relative;
+    }
+    
+    .hero-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 50px; }
+    
+    .hero-text h1 {
+      font-size: 3.8rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-block;
+      box-shadow: 0 10px 30px rgba(164, 120, 100, 0.4);
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(164, 120, 100, 0.5);
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      transition: transform 0.5s;
+    }
+    
+    .hero-image img:hover { transform: scale(1.02); }
+
+    section { padding: 120px 0; opacity: 0; transform: translateY(20px); transition: opacity 0.8s, transform 0.8s; }
+    section.visible { opacity: 1; transform: translateY(0); }
+    
+    h2 {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 70px;
+      color: var(--primary);
+      position: relative;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .about-content { display: flex; align-items: center; justify-content: center; gap: 80px; flex-wrap: wrap; }
+    
+    .about-image img {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 12px solid white;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      transition: transform 0.5s;
+      loading: lazy;
+    }
+    
+    .about-image img:hover { transform: rotate(5deg) scale(1.05); }
+
+    #projects { background: white; }
+    
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 35px;
+    }
+    
+    .project-card {
+      background: white;
+      padding: 35px;
+      border-radius: 24px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      transition: all 0.4s;
+      border-left: 6px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 25px 60px rgba(164, 120, 100, 0.2);
+    }
+
+    .skills-container { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; }
+    
+    .skill-box {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      width: 380px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    .progress { background: #EDE4D9; height: 14px; border-radius: 7px; margin: 15px 0; overflow: hidden; }
+    .bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 7px;
+      transition: width 1.5s ease;
+      position: relative;
+    }
+    
+    .bar::after {
+      content: attr(data-percent);
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
+    #contact {
+      background: linear-gradient(135deg, var(--dark), #5C4533);
+      color: white;
+    }
+    
+    #contact h2 { color: var(--accent); }
+    #contact h2::after { background: var(--primary); }
+
+    .contact-form {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+      padding: 20px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+    
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(255,255,255,0.7); }
+
+    .contact-form textarea { grid-column: 1 / -1; resize: vertical; min-height: 150px; }
+
+    .contact-form button {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #000;
+      padding: 20px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .contact-form button:hover {
+      background: #E6C233;
+      transform: translateY(-3px);
+    }
+
+    footer {
+      background: var(--dark);
+      color: #D9C2B1;
+      text-align: center;
+      padding: 50px;
+      font-size: 1.1rem;
+    }
+    
+    .social-links a {
+      color: #D9C2B1;
+      font-size: 1.5rem;
+      margin: 0 10px;
+      transition: all 0.3s;
+    }
+    
+    .social-links a:hover {
+      color: var(--accent);
+      transform: translateY(-5px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        right: -100%;
+        width: 80%;
+        height: calc(100vh - 80px);
+        background: var(--dark);
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: right 0.3s ease;
+      }
+      .nav-links.active { right: 0; }
+      .contact-form { grid-template-columns: 1fr; }
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container">
+      <nav>
+        <div class="logo">NATIA Salif</div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="#home">Accueil</a>
+          <a href="#about">À propos</a>
+          <a href="#projects">Projets</a>
+          <a href="#skills">Compétences</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Je suis Salif,<br>Développeur Web<br>du Burkina Faso</h1>
+          <p>Passionné par le code, le design et les solutions qui changent la vie.</p>
+          <a href="#projects" class="btn">Voir mes projets</a>
+        </div>
+        <div class="hero-image">
+          <img src="./assets/Developpeur_Metier.jpeg" alt="NATIA Salif, développeur web frontend basé à Ouagadougou, Burkina Faso" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2>À propos</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>Je m'appelle <strong>NATIA Salif</strong>, passionné par la création de sites web modernes et interactifs.</p>
+          <p>Je suis actuellement étudiant en développement web, et je cherche à améliorer mes compétences en JavaScript, HTML et CSS.</p>
+          <p>J'adore transformer mes idées en projets concrets et expérimenter avec les nouvelles technologies.</p>
+          <a href="https://drive.google.com/file/d/TON_CV_ID/view?usp=sharing" class="btn" target="_blank" rel="noopener">
+            Télécharger mon CV <i class="fas fa-download"></i>
+          </a>
+        </div>
+        <div class="about-image">
+          <img src="./assets/profile-image.png" alt="Photo de profil de NATIA Salif, développeur web" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <h2>Mes Projets</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>Calculateur de prêt hypothécaire</h3>
+          <p>Application complète avec formule d'amortissement et validation.</p>
+          <div class="tags">#html #css #js</div>
+          <a href="./assets/calculateur.html" class="btn" target="_blank">Voir le projet</a>
+        </div>
+        <div class="project-card">
+          <h3>Portfolio Personnel</h3>
+          <p>Ce site que vous consultez actuellement – mon projet principal.</p>
+          <div class="tags">#html #css #js</div>
+          <a href="#" class="btn">Voir le projet</a>
+        </div>
+        <div class="project-card">
+          <h3>Manipulateur de nombres</h3>
+          <p>Racine carrée, arrondi et générateur aléatoire (min/max).</p>
+          <div class="tags">#html #css #js</div>
+          <a href="./assets/indexremp.html" class="btn" target="_blank">Voir le projet</a>
+        </div>
+        <div class="project-card">
+          <h3>Manipulateur de dates</h3>
+          <p>Analyse de date et différence en jours avec aujourd'hui.</p>
+          <div class="tags">#html #css #js</div>
+          <a href="./assets/Manipulateur_Dates.html" class="btn" target="_blank">Voir le projet</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <h2>Mes Compétences</h2>
+      <div class="skills-container">
+        <div class="skill-box">
+          <h3>Soft Skills</h3>
+          <p>Gestion de projet</p>
+          <div class="progress"><div class="bar" data-percent="80%" style="width:80%"></div></div>
+          <p>Résolution de problèmes</p>
+          <div class="progress"><div class="bar" data-percent="70%" style="width:70%"></div></div>
+          <p>Adaptabilité</p>
+          <div class="progress"><div class="bar" data-percent="90%" style="width:90%"></div></div>
+        </div>
+        <div class="skill-box">
+          <h3>Hard Skills</h3>
+          <p>HTML</p>
+          <div class="progress"><div class="bar" data-percent="90%" style="width:90%"></div></div>
+          <p>CSS</p>
+          <div class="progress"><div class="bar" data-percent="85%" style="width:85%"></div></div>
+          <p>JavaScript</p>
+          <div class="progress"><div class="bar" data-percent="75%" style="width:75%"></div></div>
+          <p>VS Code</p>
+          <div class="progress"><div class="bar" data-percent="95%" style="width:95%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2>Vous avez un projet en tête ?<br>N'hésitez pas à me contacter</h2>
+      <!-- Formulaire fonctionnel avec Web3Forms (gratuit) -->
+      <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" id="contact-form">
+        <input type="hidden" name="access_key" value="TON_ACCESS_KEY_ICI">
+        
+        <input type="text" name="prénom" placeholder="Votre prénom" required>
+        <input type="text" name="nom" placeholder="Votre nom" required>
+        <input type="email" name="email" placeholder="Votre email" required>
+        <input type="text" name="sujet" placeholder="Votre sujet" required>
+        <textarea name="message" placeholder="Votre message" rows="5" required></textarea>
+        
+        <button type="submit" id="submit-btn">
+          <span id="btn-text">Envoyer le message</span>
+          <span id="btn-loading" class="loading" style="display:none"></span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Designed by NATIA Salif 🇧🇫</p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/salif-n" target="_blank" rel="noopener" aria-label="LinkedIn de NATIA Salif">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://github.com/NATIASalif" target="_blank" rel="noopener" aria-label="GitHub de NATIA Salif">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://twitter.com/tonpseudo" target="_blank" rel="noopener" aria-label="Twitter de NATIA Salif">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+      <p>© Tous droits réservés - 2025</p>
+    </div>
+  </footer>
+
+  <script>
+    // Menu mobile
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      hamburger.innerHTML = navLinks.classList.contains('active') 
+        ? '<i class="fas fa-times"></i>' 
+        : '<i class="fas fa-bars"></i>';
+    });
+    
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+      });
+    });
+    
+    // Header scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('header').classList.toggle('scrolled', window.scrollY > 100);
+    });
+    
+    // Animation sections
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('visible'));
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('section').forEach(section => observer.observe(section));
+    
+    // Animation barres compétences
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.bar').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => bar.style.width = width, 200);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('.skill-box').forEach(box => skillObserver.observe(box));
+    
+    // Formulaire avec loading
+    const form = document.getElementById('contact-form');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
+    
+    form.addEventListener('submit', function() {
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline-block';
+    });
+  </script>
+</body>
+</html>
